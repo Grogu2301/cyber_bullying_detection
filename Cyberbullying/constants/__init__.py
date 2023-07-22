@@ -48,3 +48,8 @@ MAX_WORDS = 50000
 MAX_LEN = 300
 ACTIVATION = "sigmoid"
 LOSS = "binary_crossentropy"
+
+# Model Evaluation constants
+MODEL_EVALUATION_ARTIFACTS_DIR = "ModelEvaluationArtifacts"
+BEST_MODEL_DIR = "best_model"
+MODEL_EVALUATION_FILE_NAME = "loss.csv"
