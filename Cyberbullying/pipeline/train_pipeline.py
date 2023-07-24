@@ -5,14 +5,17 @@ from Cyberbullying.components.data_ingestion import DataIngestion
 from Cyberbullying.components.data_transformation import DataTransformation
 from Cyberbullying.components.model_training import ModelTrainer
 from Cyberbullying.components.model_evaluation import ModelEvaluation
+from Cyberbullying.components.model_pusher import ModelPusher
 from Cyberbullying.entity.config_entity import (DataIngestionConfig,
                                                 DataTransformationConfig,
                                                 ModelTrainerConfig,
-                                                ModelEvaluationConfig)
+                                                ModelEvaluationConfig,
+                                                ModelPusherConfig)
 from Cyberbullying.entity.artifact_entity import (DataIngestionArtifacts,
                                                   DataTransformationArtifacts,
                                                   ModelTrainerArtifacts,
-                                                  ModelEvaluationArtifacts)
+                                                  ModelEvaluationArtifacts,
+                                                  ModelPusherArtifacts)
 
 class TrainPipeline:
     def __init__(self):
@@ -20,6 +23,7 @@ class TrainPipeline:
         self.data_transformation_config = DataTransformationConfig()
         self.model_trainer_config = ModelTrainerConfig()
         self.model_evaluation_config = ModelEvaluationConfig()
+        self.model_pusher_config = ModelPusherConfig()
         
 
     def start_data_ingestion(self) -> DataIngestionArtifacts:
@@ -80,6 +84,22 @@ class TrainPipeline:
             logging.info("Exited the start_model_evaluation method of TrainPipeline class")
 
             return model_evaluation_artifacts
+        
+        except Exception as e:
+            raise CustomException(e,sys) from e
+        
+    def start_model_pusher(self)->ModelPusherArtifacts:
+        logging.info("Exited the start_model_pusher method of TrainPipeline class")
+        try:
+            model_pusher = ModelPusher(
+                model_pusher_config=self.model_pusher_config
+            )
+
+            model_pusher_artifact = model_pusher.initiate_model_pusher()
+            logging.info("Initiated the model_pusher")
+            logging.info("Exited the model_pusher method of TrainPipeline class")
+
+            return model_pusher_artifact
         
         except Exception as e:
             raise CustomException(e,sys) from e
